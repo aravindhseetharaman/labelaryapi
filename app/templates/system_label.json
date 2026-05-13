@@ -1,0 +1,8 @@
+{
+  "label_type": "SYSTEM_LABEL",
+  "display_name": "System Label",
+  "categories": ["SYSTEM", "BATCH", "END OF BATCH", "INTERNAL"],
+  "required_fields": [],
+  "optional_fields": [],
+  "text_markers": ["END OF BATCH", "ALL ACCESS", "END OF RUN"]
+}

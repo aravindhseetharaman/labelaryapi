@@ -1,0 +1,12 @@
+services:
+  shelf-label-converter-py:
+    build: .
+    ports:
+      - "8081:8081"
+    environment:
+      - LABEL_PORT=8081
+      - LABEL_LABELARY_BASE_URL=http://api.labelary.com/v1/printers
+      - LABEL_LABELARY_DPMM=8dpmm
+      - LABEL_LABEL_WIDTH_INCHES=4
+      - LABEL_LABEL_HEIGHT_INCHES=2
+    restart: unless-stopped

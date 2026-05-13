@@ -1,0 +1,8 @@
+{
+  "label_type": "MARKDOWN_LABEL",
+  "display_name": "Markdown Label",
+  "categories": ["MARKDOWN", "REDUCED", "SALE", "WAS/NOW"],
+  "required_fields": ["item_name", "item_price"],
+  "optional_fields": ["item_description"],
+  "text_markers": ["WAS", "NOW", "SAVE", "REDUCED", "MARKDOWN"]
+}

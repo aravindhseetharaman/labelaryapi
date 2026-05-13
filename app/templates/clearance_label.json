@@ -1,0 +1,8 @@
+{
+  "label_type": "CLEARANCE_LABEL",
+  "display_name": "Clearance Label",
+  "categories": ["CLEARANCE", "FINAL SALE", "FINAL"],
+  "required_fields": ["item_name", "item_price"],
+  "optional_fields": ["item_description"],
+  "text_markers": ["CLEARANCE", "FINAL SALE", "FINAL"]
+}

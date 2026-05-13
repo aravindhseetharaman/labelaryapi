@@ -1,0 +1,183 @@
+{
+  "info": {
+    "name": "Shelf Label Converter (Python)",
+    "_postman_id": "shelf-label-converter-py-v2",
+    "description": "BIN → ZPL → Labelary PNG preview API (FastAPI / Python)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8081",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. List Templates",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/labels/templates",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "labels", "templates"]
+        },
+        "description": "Returns all 4 stored label type templates: STANDARD_SEL, MARKDOWN_LABEL, CLEARANCE_LABEL, SYSTEM_LABEL."
+      },
+      "response": []
+    },
+    {
+      "name": "2. Convert BIN → ZPL + Auto-Detect Type (file upload)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/labels/convert",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "labels", "convert"]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "samples/shelfitem.bin",
+              "description": "Upload your .bin label file"
+            }
+          ]
+        },
+        "description": "Upload a .bin shelf label file. Returns ZPL strings and auto-detected label type for each label.\n\nResponse fields:\n- labelCount: number of labels parsed\n- zplLabels: array of ZPL strings\n- detectedTypes: auto-detected type per label (STANDARD_SEL, MARKDOWN_LABEL, CLEARANCE_LABEL, SYSTEM_LABEL)\n- message: summary"
+      },
+      "response": []
+    },
+    {
+      "name": "3. Convert BIN → ZPL + Auto-Detect Type (raw text body)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "text/plain"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/labels/convert",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "labels", "convert"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "V D 100\nT 1 (0,0,2,2) 490 0 l\nULTRA_FONT C84 (8,0,0) 520 15 8.99\nT 1 520 84 Just For Men\nT 1 520 106 hair colorant\nT 1 520 128 drk brown/black\nB F5-(3:6) 520 228 31 210600008993\nJ RIGHT\nT 0 635 228 21-06-000\nEND\n\n\n! 0 100 246 1\nP 200\nV L\nV D 100\nT 1 520 97 END OF BATCH\nT 1 520 122 17/04/26 12:05\nT 1 520 147 ALL ACCESS\nEND\n",
+          "options": {
+            "raw": {
+              "language": "text"
+            }
+          }
+        },
+        "description": "Send .bin content as raw text/plain body instead of a file upload."
+      },
+      "response": []
+    },
+    {
+      "name": "4. Preview Label 0 as PNG (product label)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/labels/preview/0",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "labels", "preview", "0"]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "samples/shelfitem.bin",
+              "description": "Upload your .bin label file"
+            }
+          ]
+        },
+        "description": "Returns a PNG image of label index 0 (product label with price and barcode).\n\nIn Postman, click Save Response → Save to a file to download the PNG."
+      },
+      "response": []
+    },
+    {
+      "name": "5. Preview Label 1 as PNG (system label)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/labels/preview/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "labels", "preview", "1"]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "samples/shelfitem.bin",
+              "description": "Upload your .bin label file"
+            }
+          ]
+        },
+        "description": "Returns a PNG image of label index 1 (END OF BATCH system label).\n\nIn Postman, click Save Response → Save to a file to download the PNG."
+      },
+      "response": []
+    },
+    {
+      "name": "6. Validate Label against Sale Transaction",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/labels/validate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "labels", "validate"]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "samples/shelfitem.bin",
+              "description": "Upload your .bin label file"
+            },
+            {
+              "key": "item_name",
+              "value": "Just For Men",
+              "type": "text",
+              "description": "Item name from sale transaction"
+            },
+            {
+              "key": "item_price",
+              "value": "8.99",
+              "type": "text",
+              "description": "Item price from sale transaction"
+            },
+            {
+              "key": "item_description",
+              "value": "hair colorant",
+              "type": "text",
+              "description": "Item description from sale transaction"
+            },
+            {
+              "key": "item_category",
+              "value": "STANDARD",
+              "type": "text",
+              "description": "STANDARD / MARKDOWN / CLEARANCE / SALE / REDUCED / FINAL / SYSTEM / BATCH"
+            }
+          ]
+        },
+        "description": "Cross-validates the generated label against sale transaction data.\n\nitem_category options:\n- STANDARD / GENERAL / DEFAULT / NORMAL → Standard SEL\n- MARKDOWN / REDUCED / SALE / WAS/NOW → Markdown Label\n- CLEARANCE / FINAL / FINAL SALE → Clearance Label\n- SYSTEM / BATCH / END OF BATCH / INTERNAL → System Label\n\nResponse fields:\n- overall_valid: true only if all labels pass\n- label_count: number of labels validated\n- results: per-label breakdown with checks for item_name, item_price, item_description"
+      },
+      "response": []
+    }
+  ]
+}

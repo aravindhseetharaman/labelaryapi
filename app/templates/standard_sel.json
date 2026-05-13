@@ -1,0 +1,8 @@
+{
+  "label_type": "STANDARD_SEL",
+  "display_name": "Standard Shelf Edge Label",
+  "categories": ["STANDARD", "GENERAL", "DEFAULT", "NORMAL"],
+  "required_fields": ["item_name", "item_price"],
+  "optional_fields": ["item_description"],
+  "text_markers": []
+}
