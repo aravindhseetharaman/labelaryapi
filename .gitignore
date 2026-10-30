@@ -14,10 +14,11 @@ build/
 venv/
 env/
 
-# Pytest
+# Pytest / test output
 .pytest_cache/
 .coverage
 htmlcov/
+test-results/
 
 # Environment
 .env

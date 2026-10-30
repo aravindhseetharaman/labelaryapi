@@ -1,0 +1,188 @@
+{
+  "consumer": {
+    "name": "ShelfLabelClient"
+  },
+  "provider": {
+    "name": "ShelfLabelAPI"
+  },
+  "interactions": [
+    {
+      "providerState": "label templates exist",
+      "description": "a GET request for all label templates",
+      "request": {
+        "method": "GET",
+        "path": "/api/labels/templates"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "templates": [
+            {
+              "label_type": "STANDARD_SEL",
+              "display_name": "Standard Shelf Edge Label",
+              "categories": [
+                "STANDARD"
+              ]
+            }
+          ]
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "$.body.templates": {
+            "match": "type",
+            "min": 1
+          },
+          "$.body.templates.label_type": {
+            "match": "type"
+          },
+          "$.body.templates.display_name": {
+            "match": "type"
+          },
+          "$.body.templates.categories": {
+            "match": "type",
+            "min": 1
+          }
+        }
+      }
+    },
+    {
+      "providerState": "the API accepts BIN content via form field",
+      "description": "a POST request to convert BIN content (form field) to ZPL",
+      "request": {
+        "method": "POST",
+        "path": "/api/labels/convert"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "labelCount": 1,
+          "zplLabels": [
+            "^XA^FO^XZ"
+          ],
+          "detectedTypes": [
+            "STANDARD_SEL"
+          ],
+          "message": "1 label(s) converted successfully"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "$.body.labelCount": {
+            "match": "type"
+          },
+          "$.body.zplLabels": {
+            "match": "type",
+            "min": 1
+          },
+          "$.body.detectedTypes": {
+            "match": "type",
+            "min": 1
+          },
+          "$.body.message": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "providerState": "a standard product label can be validated",
+      "description": "a POST request to validate a standard product label",
+      "request": {
+        "method": "POST",
+        "path": "/api/labels/validate"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "overall_valid": true,
+          "label_count": 1,
+          "results": [
+            {
+              "label_index": 0,
+              "valid": true,
+              "checks": {}
+            }
+          ]
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "$.body.overall_valid": {
+            "match": "type"
+          },
+          "$.body.label_count": {
+            "match": "type"
+          },
+          "$.body.results": {
+            "match": "type",
+            "min": 1
+          },
+          "$.body.results.label_index": {
+            "match": "type"
+          },
+          "$.body.results.valid": {
+            "match": "type"
+          },
+          "$.body.results.checks": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "providerState": "an unknown item category is submitted",
+      "description": "a POST request to validate with an unknown category",
+      "request": {
+        "method": "POST",
+        "path": "/api/labels/validate"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "overall_valid": false,
+          "label_count": 1,
+          "results": [
+            {
+              "label_index": 0,
+              "valid": false,
+              "checks": {}
+            }
+          ]
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "$.body.overall_valid": {
+            "match": "type"
+          },
+          "$.body.label_count": {
+            "match": "type"
+          },
+          "$.body.results": {
+            "match": "type",
+            "min": 1
+          },
+          "$.body.results.label_index": {
+            "match": "type"
+          },
+          "$.body.results.valid": {
+            "match": "type"
+          },
+          "$.body.results.checks": {
+            "match": "type"
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
